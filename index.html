@@ -969,9 +969,16 @@ function buildPdf(doc){
 
   /* ---------- HEADER ---------- */
   pdf.setFont('DejaVuSans', 'bold');
-  pdf.setFontSize(19);
+  let companyFontSize = 19;
+  const companyNameUpper = settings.companyName.toUpperCase();
+  const maxHeaderW = pageW - marginX*2;
+  pdf.setFontSize(companyFontSize);
+  while(pdf.getTextWidth(companyNameUpper) > maxHeaderW && companyFontSize > 10){
+    companyFontSize -= 0.5;
+    pdf.setFontSize(companyFontSize);
+  }
   pdf.setTextColor(...INK);
-  pdf.text(spaceOut(settings.companyName.toUpperCase()), pageW/2, y, { align:'center' });
+  pdf.text(companyNameUpper, pageW/2, y, { align:'center' });
 
   y += 17;
   pdf.setFont('DejaVuSans', 'bold');
